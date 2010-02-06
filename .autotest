@@ -1,0 +1,21 @@
+require 'autotest/growl'
+# require 'redgreen/autotest'
+
+# Autotest::Growl::show_modified_files = true
+# Autotest::Growl::one_notification_per_run = true
+# Autotest::Growl::clear_terminal = false
+# Autotest::Growl::hide_label = true
+
+# Override autotest default magic to rerun all tests every time a
+# change is detected on the file system.
+class Autotest
+
+  def get_to_green
+    begin
+      rerun_all_tests
+      wait_for_changes unless all_good
+    end until all_good
+  end
+
+end
+
