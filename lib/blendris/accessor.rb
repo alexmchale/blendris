@@ -4,6 +4,8 @@ module Blendris
 
   module RedisAccessor
 
+    include Utils
+
     def redis
       RedisAccessor.redis
     end

@@ -11,7 +11,7 @@ module Blendris
       actual_type = constantize(redis.get(prefix + key))
 
       raise ArgumentError.new("#{self.class.name} second argument must be a hash") unless options.kind_of? Hash
-      raise TypeError.new("#{prefix + key} does not exist, not a #{self.class.name}") if !actual_type
+      raise TypeError.new("#{prefix + key} does not exist, not a #{self.class.name} - you may want create instead of new") if !actual_type
       raise TypeError.new("#{prefix + key} is a #{actual_type}, not a #{self.class.name}") if actual_type != self.class
 
       if options[:verify] != false
