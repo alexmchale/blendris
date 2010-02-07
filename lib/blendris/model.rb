@@ -46,7 +46,7 @@ module Blendris
 
       options = self.class.redis_symbols[name.to_s]
 
-      raise ArgumentError.new("symbol #{name} not found on #{self.class.name}") unless options
+      return unless options
 
       options = options.merge(:model => self)
 
@@ -105,6 +105,12 @@ module Blendris
 
       def string(name, options = {})
         options[:type] = RedisString
+
+        redis_symbols[name.to_s] = options
+      end
+
+      def integer(name, options = {})
+        options[:type] = RedisInteger
 
         redis_symbols[name.to_s] = options
       end

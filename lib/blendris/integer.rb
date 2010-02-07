@@ -1,6 +1,6 @@
 module Blendris
 
-  class RedisString
+  class RedisInteger
 
     include RedisNode
 
@@ -8,27 +8,29 @@ module Blendris
       @key = sanitize_key(key)
       @default = options[:default]
 
-      set(@default) if @default && !redis.exists(self.key)
+      set(@default) if @default && get.nil?
     end
 
     def set(value)
       if value
-        redis.set key, value
+        redis.set key, value.to_i
       else
         redis.del key
       end
     end
 
     def get
-      redis.get key
+      value = redis.get(key)
+
+      value.to_i if value
     end
 
-    def to_s
+    def to_i
       get
     end
 
     def self.cast(value)
-      raise TypeError.new("#{value.class.name} is not a string") unless value.kind_of? String
+      raise TypeError.new("#{value.class.name} is not a string") unless value.kind_of? Fixnum
 
       value
     end

@@ -7,6 +7,13 @@ describe Model do
     @onion.name.should == "onion"
   end
 
+  it "should have a working integer field" do
+    @onion.calories.should == 0
+
+    @onion.calories = 120
+    @onion.calories.should == 120
+  end
+
   it "should have a valid reference" do
     @onion.category.should be_nil
 

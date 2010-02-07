@@ -7,6 +7,7 @@ blendris.gemspec
 lib/blendris.rb
 lib/blendris/accessor.rb
 lib/blendris/errors.rb
+lib/blendris/integer.rb
 lib/blendris/list.rb
 lib/blendris/model.rb
 lib/blendris/node.rb

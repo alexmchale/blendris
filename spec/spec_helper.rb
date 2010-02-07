@@ -17,14 +17,15 @@ module TestFixtures
 
     key "food", :name
 
-    string :name
-    string :description
-    set    :qualities
-    list   :sales
-    ref    :category, :class => "TestFixtures::Category", :reverse => :foods
-    ref    :sibling, :class => Food, :reverse => :sibling
-    refs   :friends, :class => Food, :reverse => :friends
-    ref    :something
+    string  :name
+    string  :description, :default => "a tasty food"
+    integer :calories, :default => 0
+    set     :qualities
+    list    :sales
+    ref     :category, :class => "TestFixtures::Category", :reverse => :foods
+    ref     :sibling, :class => Food, :reverse => :sibling
+    refs    :friends, :class => Food, :reverse => :friends
+    ref     :something
 
   end
 

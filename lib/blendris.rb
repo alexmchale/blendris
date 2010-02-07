@@ -12,6 +12,7 @@ require "blendris/accessor"
 require "blendris/node"
 
 require "blendris/string"
+require "blendris/integer"
 require "blendris/list"
 require "blendris/set"
 
