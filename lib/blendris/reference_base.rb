@@ -3,11 +3,13 @@ module Blendris
   class RedisReferenceBase
 
     include RedisNode
+    extend RedisAccessor
 
     def initialize(key, options = {})
       @model = options[:model]
       @key = sanitize_key(key)
       @reverse = options[:reverse]
+      @options = options
 
       if options[:class]
         @klass = constantize(camelize options[:class])
@@ -17,12 +19,6 @@ module Blendris
         end
       else
         @klass = Model
-      end
-    end
-
-    def verify_object_type(value)
-      unless value.nil? || value.kind_of?(@klass)
-        raise TypeError.new("#{value.class.name} is not a #{@klass.name}")
       end
     end
 
@@ -40,15 +36,34 @@ module Blendris
       end
     end
 
-    def references(value)
-      return true if @ref.to_s.nil? && value.nil?
-      return @ref.to_s == value.key
+    def self.cast_to_redis(obj, options = {})
+      expect = options[:class] || Model
+      expect = constantize(expect) if expect.kind_of? String
+      expect = Model unless expect.ancestors.include? Model
+
+      if obj == nil
+        nil
+      elsif obj.kind_of? expect
+        obj.key
+      else
+        raise TypeError.new("#{obj.class.name} is not a #{expect.name}")
+      end
     end
 
-    def self.cast(value)
-      raise TypeError.new("#{value.class.name} is not a model to reference") unless value.kind_of? Model
+    def self.cast_from_redis(refkey, options = {})
+      expect = options[:class] || Model
+      expect = constantize(expect) if expect.kind_of? String
+      expect = Model unless expect.ancestors.include? Model
 
-      value.key
+      klass = constantize(redis.get(prefix + refkey)) if refkey
+
+      if klass == nil
+        nil
+      elsif klass.ancestors.include? expect
+        klass.new refkey
+      else
+        raise TypeError.new("#{klass.name} is not a #{expect.name}")
+      end
     end
 
   end

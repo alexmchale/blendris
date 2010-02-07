@@ -158,7 +158,7 @@ module Blendris
         options = redis_symbols[symbol.to_s]
         raise ArgumentError.new("#{self.name} is missing its #{symbol}") unless options
 
-        options[:type].cast value
+        options[:type].cast_to_redis value, options
       end
 
     end

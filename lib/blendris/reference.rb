@@ -8,30 +8,27 @@ module Blendris
       @ref ||= RedisString.new(@key)
     end
 
-    def set(value)
-      verify_object_type value
-
-      old_value = self.get if @reverse
+    def set(obj)
+      old_obj = self.get if @reverse
       modified = false
+      refkey = self.class.cast_to_redis(obj, @options)
 
-      if value.nil?
+      if refkey == nil
         ref.set nil
         modified = true
-      elsif value.key != ref.to_s
-        ref.set value.key
-        apply_reverse_add value
+      elsif refkey != ref.get
+        ref.set refkey
+        apply_reverse_add obj
         modified = true
       end
 
-      apply_reverse_delete(old_value) if modified
+      apply_reverse_delete(old_obj) if modified
 
-      value
+      obj
     end
 
     def get
-      refkey = ref.to_s
-      klass = constantize(redis.get(prefix + refkey)) if refkey
-      klass.new(refkey) if klass
+      self.class.cast_from_redis ref.get
     end
 
     def assign_ref(value)
@@ -43,8 +40,10 @@ module Blendris
     end
 
     def references(value)
-      return true if ref.to_s.nil? && value.nil?
-      return ref.to_s == value.key
+      refval = ref.get
+
+      return true if refval.nil? && value.nil?
+      return refval == value.key
     end
 
   end

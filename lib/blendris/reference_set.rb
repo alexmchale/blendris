@@ -9,29 +9,27 @@ module Blendris
       @refs ||= RedisSet.new(@key)
     end
 
-    def set(*values)
-      values.flatten!
-      values.compact!
+    def set(*objs)
+      objs.flatten!
+      objs.compact!
 
-      values.each do |value|
-        verify_object_type value
-        next unless value
-
-        refs << value.key
-        apply_reverse_add value
+      objs.each do |obj|
+        if refkey = self.class.cast_to_redis(obj, @options)
+          refs << refkey
+          apply_reverse_add obj
+        end
       end
 
       self
     end
     alias :<< :set
 
-    def delete(value)
-      verify_object_type(value)
-      return unless value
-
-      deleted = refs.delete(value.key)
-      apply_reverse_delete(value) if deleted
-      deleted
+    def delete(obj)
+      if refkey = self.class.cast_to_redis(obj, @options)
+        deleted = refs.delete(refkey)
+        apply_reverse_delete(obj) if deleted
+        deleted
+      end
     end
 
     def get
@@ -40,16 +38,14 @@ module Blendris
 
     def each
       redis.smembers(key).each do |refkey|
-        klass = constantize(redis.get(prefix + refkey))
-        yield klass.new(refkey)
+        yield self.class.cast_from_redis(refkey, @options)
       end
     end
 
-    def include?(value)
-      subkey = value.key if value.kind_of? @klass
-      subkey ||= value.to_s
+    def include?(obj)
+      refkey = self.class.cast_to_redis(obj, @options)
 
-      refs.include? subkey
+      refs.include? refkey
     end
 
     def assign_ref(*values)
