@@ -47,6 +47,15 @@ module TestFixtures
 
   end
 
+  class Website < Blendris::Model
+    key "website", :title
+
+    string :title
+    string :url
+    set    :paths
+    refs   :sister_sites, :class => Website, :reverse => :sister_sites
+  end
+
 end
 
 Spec::Runner.configure do |config|

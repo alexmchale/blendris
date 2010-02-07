@@ -13,6 +13,8 @@ describe "redis strings" do
 
     @onion.description = nil
     @onion.description.should == "a tasty food"
+
+    lambda { @onion.description = 12 }.should raise_exception(TypeError)
   end
 
 end

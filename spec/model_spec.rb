@@ -28,6 +28,7 @@ describe Model do
 
     @fruit.foods.should be_include(@apple)
     @fruit.foods.should be_include(@lemon)
+    @fruit.foods.should be_include(Food.new("food:lemon"))
     @fruit.foods.should_not be_include(@steak)
   end
 
@@ -142,6 +143,36 @@ describe Model do
       @apple.friends.should be_include(@onion)
       @lemon.friends.should_not be_include(@apple)
       @onion.friends.should be_include(@apple)
+    end
+
+  end
+
+  context "website sister sites" do
+
+    it "should update each others sister sites table" do
+
+      site1 = Website.create("Site One")
+      site2 = Website.create("Site Two")
+
+      site1.sister_sites.count.should == 0
+      site2.sister_sites.count.should == 0
+      site1.sister_sites.should_not be_include site2
+      site2.sister_sites.should_not be_include site1
+
+      site1.sister_sites << site2
+
+      site1.sister_sites.count.should == 1
+      site2.sister_sites.count.should == 1
+      site1.sister_sites.should be_include site2
+      site2.sister_sites.should be_include site1
+
+      site2.sister_sites.delete site1
+
+      site1.sister_sites.count.should == 0
+      site2.sister_sites.count.should == 0
+      site1.sister_sites.should_not be_include site2
+      site2.sister_sites.should_not be_include site1
+
     end
 
   end
