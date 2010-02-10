@@ -11,14 +11,11 @@ module Blendris
       @reverse = options[:reverse]
       @options = options
 
-      if options[:class]
-        @klass = constantize(camelize options[:class])
+      @klass = options[:class] || Model
+      @klass = constantize(camelize @klass) if @klass.kind_of? String
 
-        unless @klass.ancestors.include? Model
-          raise ArgumentError.new("#{klass.name} is not a model")
-        end
-      else
-        @klass = Model
+      unless @klass.ancestors.include? Model
+        raise ArgumentError.new("#{klass.name} is not a model")
       end
     end
 

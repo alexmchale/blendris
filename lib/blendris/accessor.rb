@@ -14,10 +14,6 @@ module Blendris
       $_redis_connection ||= Redis.new
     end
 
-    def sanitize_key(key)
-      key.to_s.gsub(/[\r\n\s]/, "_").gsub(/^:+|:+$/, "")
-    end
-
     def prefix
       RedisAccessor.prefix
     end

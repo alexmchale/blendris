@@ -11,6 +11,8 @@ require "blendris/utils"
 require "blendris/accessor"
 require "blendris/node"
 
+require "blendris/model"
+
 require "blendris/string"
 require "blendris/integer"
 require "blendris/list"
@@ -20,4 +22,4 @@ require "blendris/reference_base"
 require "blendris/reference"
 require "blendris/reference_set"
 
-require "blendris/model"
+require "blendris/types"

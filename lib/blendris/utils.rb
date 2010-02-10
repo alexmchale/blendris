@@ -30,6 +30,10 @@ module Blendris
       return false
     end
 
+    def sanitize_key(key)
+      key.to_s.gsub(/[\r\n\s]/, "_").gsub(/^:+|:+$/, "")
+    end
+
   end
 
 end

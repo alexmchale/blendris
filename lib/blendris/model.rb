@@ -81,7 +81,9 @@ module Blendris
         key = generate_key(self, args)
         current_model = redis.get(prefix + key)
 
-        raise ArgumentError.new("#{key} is a #{current_model}, not a #{self.name}") if current_model && current_model != self.name
+        if current_model && current_model != self.name
+          raise ArgumentError.new("#{key} is a #{current_model}, not a #{self.name}")
+        end
 
         redis.set(prefix + key, self.name)
 
@@ -103,44 +105,14 @@ module Blendris
         nil
       end
 
-      def string(name, options = {})
-        options[:type] = RedisString
-
-        redis_symbols[name.to_s] = options
-      end
-
-      def integer(name, options = {})
-        options[:type] = RedisInteger
-
-        redis_symbols[name.to_s] = options
-      end
-
-      def list(name, options = {})
-        options[:type] = RedisList
-
-        redis_symbols[name.to_s] = options
-      end
-
-      def set(name, options = {})
-        options[:type] = RedisSet
-
-        redis_symbols[name.to_s] = options
-      end
-
-      def ref(name, options = {})
-        options[:class] = options[:class].name if options[:class].kind_of?(Class)
-        options[:class] ||= Model.name
-        options[:type] = RedisReference
-
-        redis_symbols[name.to_s] = options
-      end
-
-      def refs(name, options = {})
-        options[:class] = options[:class].name if options[:class].kind_of?(Class)
-        options[:class] ||= Model.name
-        options[:type] = RedisReferenceSet
-
-        redis_symbols[name.to_s] = options
+      # Defines a new data type for Blendris:Model construction.
+      def type(name, klass)
+        (class << self; self; end).instance_eval do
+          define_method name do |varname, options = {}|
+            options[:type] = klass
+            redis_symbols[varname.to_s] = options
+          end
+        end
       end
 
       # Variables stored in the Redis database.
