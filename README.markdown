@@ -18,10 +18,6 @@ PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 
 
 
-# SYNOPSIS #
-
-
-
 # REQUIREMENTS #
 
 * Blendris uses the redis RubyGem.
