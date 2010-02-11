@@ -8,6 +8,10 @@ Blendris is a Ruby interface to a Redis database.
 
 == FEATURES/PROBLEMS:
 
+BLENDRIS IS IN VERY EARLY ALPHA!!!
+
+PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
+
 == SYNOPSIS:
 
 == REQUIREMENTS:
