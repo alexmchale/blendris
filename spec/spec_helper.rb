@@ -7,7 +7,9 @@ rescue LoadError
 end
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
-require 'blendris'
+
+require "rubygems"
+require "./lib/blendris"
 
 include Blendris
 
@@ -59,10 +61,9 @@ module TestFixtures
 end
 
 Spec::Runner.configure do |config|
-  config.before(:each) do
-    extend RedisAccessor
-    extend TestFixtures
+  include TestFixtures
 
+  config.before(:each) do
     RedisAccessor.prefix = "blendris-spec:"
     RedisAccessor.flush_keys
 

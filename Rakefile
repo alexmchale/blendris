@@ -5,8 +5,9 @@ gem "redis", ">= 0.1.2"
 
 require "echoe"
 
-require 'fileutils'
-require './lib/blendris'
+require "redis"
+require "fileutils"
+require "./lib/blendris"
 
 Echoe.new("blendris", "0.0.2") do |p|
 

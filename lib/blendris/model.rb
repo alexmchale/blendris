@@ -108,10 +108,12 @@ module Blendris
       # Defines a new data type for Blendris:Model construction.
       def type(name, klass)
         (class << self; self; end).instance_eval do
-          define_method name do |varname, options|
-            options ||= {}
+          define_method(name) do |*args|
+            varname = args.shift.to_s
+            options = args.shift || {}
+
             options[:type] = klass
-            redis_symbols[varname.to_s] = options
+            redis_symbols[varname] = options
           end
         end
       end
