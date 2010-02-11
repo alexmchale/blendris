@@ -1,9 +1,10 @@
 History.txt
 Manifest
 PostInstall.txt
-README.rdoc
+README.markdown
 Rakefile
 autotest/discover.rb
+blendris.gemspec
 lib/blendris.rb
 lib/blendris/accessor.rb
 lib/blendris/errors.rb

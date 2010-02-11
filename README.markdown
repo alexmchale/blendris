@@ -1,28 +1,40 @@
-= blendris
+# Blendris #
 
 * http://github.com/alexmchale/blendris
 
-== DESCRIPTION:
+
+
+# DESCRIPTION #
 
 Blendris is a Ruby interface to a Redis database.
 
-== FEATURES/PROBLEMS:
+
+
+# FEATURES/PROBLEMS #
 
 BLENDRIS IS IN VERY EARLY ALPHA!!!
 
 PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 
-== SYNOPSIS:
 
-== REQUIREMENTS:
+
+# SYNOPSIS #
+
+
+
+# REQUIREMENTS #
 
 * Blendris uses the redis RubyGem.
 
-== INSTALL:
+
+
+# INSTALL #
 
 * gem install blendris
 
-== EXAMPLES:
+
+
+# EXAMPLES #
 
 The following would create a Website model that knows its url and
 paths within the website.
@@ -57,7 +69,9 @@ This will cause the website to maintain a set of other websites.  The reverse ta
 causes the other website's sister_sites set to be updated when it is added or removed
 from this site's list.
 
-== LICENSE:
+
+
+# LICENSE #
 
 (The MIT License)
 
