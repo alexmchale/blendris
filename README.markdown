@@ -1,6 +1,6 @@
 # Blendris #
 
-* http://github.com/alexmchale/blendris
+http://github.com/alexmchale/blendris
 
 
 
@@ -20,13 +20,13 @@ PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 
 # REQUIREMENTS #
 
-* Blendris uses the redis RubyGem.
+Blendris uses the redis RubyGem.
 
 
 
 # INSTALL #
 
-* gem install blendris
+gem install blendris
 
 
 
