@@ -6,6 +6,14 @@ module Blendris
 
     attr_reader :key
 
+    # Instantiate a new instance of this model.  We do some basic
+    # checking to make sure that this object already exists in Redis
+    # as the requested type.  This is to prevent keys being used in
+    # the wrong way.
+
+    # If the :verify option isn't set to false, then each field of
+    # this model is also verified.
+
     def initialize(new_key, options = {})
       @key = sanitize_key(new_key)
       actual_type = constantize(redis.get(prefix + key))
@@ -23,10 +31,15 @@ module Blendris
       end
     end
 
+    # An object's id is considered to be the SHA1 digest of its key.  This is
+    # to ensure that all objects that represent the same key return the same id.
     def id
       Digest::SHA1.hexdigest key
     end
 
+    # TODO: Create the methods in the initialize method instead of depending
+    # on method_missing to dispatch to the correct methods.  This will make
+    # these objects better for mocking and stubbing.
     def method_missing(method_sym, *arguments)
       (name, setter) = method_sym.to_s.scan(/(.*[^=])(=)?/).first
 
@@ -41,6 +54,9 @@ module Blendris
       super
     end
 
+    # Look up the given symbol by its name.  The list of symbols are defined
+    # when the model is declared.
+    # TODO: This can also probably go away when I remove the need for method_missing.
     def redis_symbol(name)
       subkey = self.subkey(name)
 
@@ -53,10 +69,12 @@ module Blendris
       options[:type].new subkey, options
     end
 
-    def subkey(key)
-      sanitize_key "#{self.key}:#{key}"
+    # Calculate the key to address the given child node.
+    def subkey(child)
+      sanitize_key "#{self.key}:#{child}"
     end
 
+    # Compare two instances.  If two instances have the same class and key, they are equal.
     def ==(other)
       return false unless self.class == other.class
       return self.key == other.key
