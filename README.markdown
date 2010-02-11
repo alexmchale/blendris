@@ -39,31 +39,31 @@ PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 The following would create a Website model that knows its url and
 paths within the website.
 
-  class Website < Blendris::Model
-    key "website", :title
+    class Website < Blendris::Model
+      key "website", :title
 
-    string :title
-    string :url
-    set    :paths
-  end
+      string :title
+      string :url
+      set    :paths
+    end
 
-  website = Website.create("One Fake Website")
-  website.url = "http://fakewebsite.com"
-  website.paths << "/blog/index"
-  website.paths << "/admin/index"
+    website = Website.create("One Fake Website")
+    website.url = "http://fakewebsite.com"
+    website.paths << "/blog/index"
+    website.paths << "/admin/index"
 
 The above would create the following Redis keys:
 
-  website:One_Fake_Website       => "Website" (This identifies the model type)
-  website:One_Fake_Website:name  => "One Fake Website"
-  website:One_Fake_Website:url   => "http://fakewebsite.com"
-  website:One_Fake_Website:paths => [ "/blog/index", "/admin/index" ]
+    website:One_Fake_Website       => "Website" (This identifies the model type)
+    website:One_Fake_Website:name  => "One Fake Website"
+    website:One_Fake_Website:url   => "http://fakewebsite.com"
+    website:One_Fake_Website:paths => [ "/blog/index", "/admin/index" ]
 
 Now suppose we want to open the Website model back up to add a concept of sister sites:
 
-  class Website
-    refs :sister_sites, :class => Website, :reverse => :sister_sites
-  end
+    class Website
+      refs :sister_sites, :class => Website, :reverse => :sister_sites
+    end
 
 This will cause the website to maintain a set of other websites.  The reverse tag
 causes the other website's sister_sites set to be updated when it is added or removed
