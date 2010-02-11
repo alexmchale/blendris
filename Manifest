@@ -1,9 +1,9 @@
 History.txt
-Manifest.txt
+Manifest
 PostInstall.txt
 README.rdoc
 Rakefile
-blendris.gemspec
+autotest/discover.rb
 lib/blendris.rb
 lib/blendris/accessor.rb
 lib/blendris/errors.rb
@@ -16,6 +16,7 @@ lib/blendris/reference_base.rb
 lib/blendris/reference_set.rb
 lib/blendris/set.rb
 lib/blendris/string.rb
+lib/blendris/types.rb
 lib/blendris/utils.rb
 script/console
 script/destroy
@@ -23,6 +24,7 @@ script/generate
 spec/list_spec.rb
 spec/model_spec.rb
 spec/redis-tools_spec.rb
+spec/ref_spec.rb
 spec/set_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
