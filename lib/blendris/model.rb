@@ -80,6 +80,11 @@ module Blendris
       return self.key == other.key
     end
 
+    # Return a list of field names for this model.
+    def fields
+      self.class.redis_symbols.map {|name, field| name.to_s}
+    end
+
     class << self
 
       include RedisAccessor

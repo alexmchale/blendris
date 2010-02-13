@@ -48,6 +48,14 @@ describe Model do
     fav.food.should == @onion
   end
 
+  it "should have a valid list of fields" do
+
+    fields = %w( name foods )
+
+    @vegetable.fields.should == fields
+
+  end
+
   context "with single reference" do
 
     it "should reverse to a single reference" do
