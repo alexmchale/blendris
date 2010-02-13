@@ -64,8 +64,8 @@ Spec::Runner.configure do |config|
   include TestFixtures
 
   config.before(:each) do
-    RedisAccessor.prefix = "blendris-spec:"
-    RedisAccessor.flush_keys
+    RedisAccessor.database = 11
+    RedisAccessor.flushdb
 
     @vegetable = Category.create("vegetable")
     @onion = Food.create("onion")
@@ -80,7 +80,7 @@ Spec::Runner.configure do |config|
   end
 
   config.after(:each) do
-    RedisAccessor.flush_keys
+    RedisAccessor.flushdb
   end
 end
 

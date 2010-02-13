@@ -16,11 +16,11 @@ module Blendris
 
     def initialize(new_key, options = {})
       @key = sanitize_key(new_key)
-      actual_type = constantize(redis.get(prefix + key))
+      actual_type = constantize(redis.get(key))
 
       raise ArgumentError.new("#{self.class.name} second argument must be a hash") unless options.kind_of? Hash
-      raise TypeError.new("#{prefix + key} does not exist, not a #{self.class.name} - you may want create instead of new") if !actual_type
-      raise TypeError.new("#{prefix + key} is a #{actual_type}, not a #{self.class.name}") if actual_type != self.class
+      raise TypeError.new("#{key} does not exist, not a #{self.class.name} - you may want create instead of new") if !actual_type
+      raise TypeError.new("#{key} is a #{actual_type}, not a #{self.class.name}") if actual_type != self.class
 
       if options[:verify] != false
         parameters = self.class.local_parameters.find_all {|s| s.kind_of? Symbol}
@@ -83,6 +83,7 @@ module Blendris
     class << self
 
       include RedisAccessor
+      include Enumerable
 
       # This method will instantiate a new object with the correct key
       # and assign the values passed to it.
@@ -97,13 +98,14 @@ module Blendris
         end
 
         key = generate_key(self, args)
-        current_model = redis.get(prefix + key)
+        current_model = redis.get(key)
 
         if current_model && current_model != self.name
           raise ArgumentError.new("#{key} is a #{current_model}, not a #{self.name}")
         end
 
-        redis.set(prefix + key, self.name)
+        redis.set key, self.name
+        redis.sadd index_key, key
 
         obj = new(key, :verify => false)
 
@@ -121,6 +123,14 @@ module Blendris
         @local_parameters.compact!
 
         nil
+      end
+
+      def each
+        RedisSet.new(index_key).each {|k| yield new(k)}
+      end
+
+      def index_key
+        "index:model:#{self.name}"
       end
 
       # Defines a new data type for Blendris:Model construction.

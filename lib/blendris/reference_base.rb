@@ -52,7 +52,7 @@ module Blendris
       expect = constantize(expect) if expect.kind_of? String
       expect = Model unless expect.ancestors.include? Model
 
-      klass = constantize(redis.get(prefix + refkey)) if refkey
+      klass = constantize(redis.get(refkey)) if refkey
 
       if klass == nil
         nil

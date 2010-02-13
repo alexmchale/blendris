@@ -5,7 +5,7 @@ describe "redis connection accessor" do
   it "should connect for reading and writing" do
     extend RedisAccessor
 
-    testkey = prefix + "test-string"
+    testkey = "test-string"
 
     redis.get(testkey).should == nil
     redis.set(testkey, "foo").should == true

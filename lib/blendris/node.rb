@@ -5,6 +5,8 @@ module Blendris
 
     include RedisAccessor
 
+    attr_reader :key
+
     def initialize(key, options = {})
       @key = sanitize_key(key)
       @default = options[:default]
@@ -23,10 +25,6 @@ module Blendris
 
     def get
       self.class.cast_from_redis redis.get(self.key), @options
-    end
-
-    def key
-      prefix + @key
     end
 
     def clear

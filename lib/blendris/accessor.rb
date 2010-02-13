@@ -12,10 +12,6 @@ module Blendris
       $_redis_connection ||= Redis.new
     end
 
-    def prefix
-      RedisAccessor.prefix
-    end
-
     def generate_key(klass, values)
       value_index = 0
 
@@ -41,18 +37,12 @@ module Blendris
       end.compact.join(":")
     end
 
-    def self.prefix
-      $_redis_prefix ||= ""
+    def self.database=(index)
+      $_redis_connection = Redis.new(:db => index.to_i)
     end
 
-    def self.prefix=(prefix)
-      $_redis_prefix = prefix.to_s
-    end
-
-    def self.flush_keys
-      redis.keys("#{prefix}*").each do |key|
-        redis.del key
-      end
+    def self.flushdb
+      redis.flushdb
     end
 
   end

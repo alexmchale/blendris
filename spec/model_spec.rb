@@ -177,4 +177,17 @@ describe Model do
 
   end
 
+  it "should enumerable all foods" do
+    Food.count.should == 5
+
+    count = 0
+
+    Food.each do |food|
+      count += 1
+      food.should be_a(Food)
+    end
+
+    count.should == 5
+  end
+
 end
