@@ -1,5 +1,7 @@
 module Blendris
 
+  # RedisList is a wrapper for the Redis LIST data type.
+
   class RedisList
 
     include RedisNode

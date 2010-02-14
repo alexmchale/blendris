@@ -1,5 +1,8 @@
 module Blendris
 
+  # RedisReference is a wrapper to a Redis string value and serves
+  # as a pointer to another blendris object.
+
   class RedisReference < RedisReferenceBase
 
     include RedisNode

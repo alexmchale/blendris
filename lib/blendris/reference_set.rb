@@ -1,5 +1,8 @@
 module Blendris
 
+  # RedisReferenceSet is a wrapper to a Redis set value and serves
+  # as a pointer to multiple other blendris objects.
+
   class RedisReferenceSet < RedisReferenceBase
 
     include RedisNode

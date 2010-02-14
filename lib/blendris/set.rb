@@ -1,5 +1,7 @@
 module Blendris
 
+  # RedisSet is a wrapper to the Redis SET data type.
+
   class RedisSet
 
     include RedisNode

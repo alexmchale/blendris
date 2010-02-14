@@ -1,5 +1,7 @@
 module Blendris
 
+  # Define what types are built into blendris models.
+
   class Model
 
     type :string, RedisString

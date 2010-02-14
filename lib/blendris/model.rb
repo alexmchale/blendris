@@ -1,5 +1,8 @@
 module Blendris
 
+  # Model is the main driver for Blendris.  All Blendris objects
+  # will inherit from it to function as a database model.
+
   class Model
 
     include RedisAccessor

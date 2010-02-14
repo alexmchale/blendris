@@ -1,5 +1,8 @@
 module Blendris
 
+  # This module serves as a gateway to the Redis library.  Any object
+  # that needs to access Redis directly should include it.
+
   module RedisAccessor
 
     include Utils
@@ -12,6 +15,8 @@ module Blendris
       $_redis_connection ||= Redis.new
     end
 
+    # Generate a key for the given model class with the given values list.
+    # This is used to determine a new object's key in the Model.create method.
     def generate_key(klass, values)
       value_index = 0
 
@@ -37,10 +42,12 @@ module Blendris
       end.compact.join(":")
     end
 
+    # Change which database we're accessing in Redis.
     def self.database=(index)
       $_redis_connection = Redis.new(:db => index.to_i)
     end
 
+    # This will delete all keys in the current database.  Dangerous!
     def self.flushdb
       redis.flushdb
     end

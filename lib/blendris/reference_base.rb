@@ -1,5 +1,8 @@
 module Blendris
 
+  # RedisReferenceBase holds the methods that are common to
+  # RedisReference objects and RedisReferenceSet objects.
+
   class RedisReferenceBase
 
     include RedisNode

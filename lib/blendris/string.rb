@@ -1,5 +1,7 @@
 module Blendris
 
+  # RedisString is a wrapper to the Redis string data type.
+
   class RedisString
 
     include RedisNode

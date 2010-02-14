@@ -1,5 +1,7 @@
 module Blendris
 
+  # This module provides a few utility methods that are used throughout Blendris.
+
   module Utils
 
     # Method lifted from Rails.

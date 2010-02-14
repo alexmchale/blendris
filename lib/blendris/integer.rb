@@ -1,5 +1,8 @@
 module Blendris
 
+  # RedisInteger is a string-value in Redis wrapped up to make
+  # sure that it is used as an integer.
+
   class RedisInteger
 
     include RedisNode
