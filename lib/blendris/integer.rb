@@ -10,7 +10,7 @@ module Blendris
     def self.cast_to_redis(value, options = {})
       raise TypeError.new("#{value.class.name} is not an integer") unless value.kind_of? Fixnum
 
-      value
+      value.to_s
     end
 
     def self.cast_from_redis(value, options = {})
