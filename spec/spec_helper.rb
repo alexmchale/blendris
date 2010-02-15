@@ -62,6 +62,21 @@ module TestFixtures
     refs   :sister_sites, :class => Website, :reverse => :sister_sites
   end
 
+  class OnChangeTestModel < Blendris::Model
+    key "fixed"
+
+    string :string
+    integer :integer
+    set :set
+    list :list
+    ref :ref
+    refs :refs
+
+    on_change { raise TestEx.new }
+  end
+
+  class TestEx < Exception; end
+
 end
 
 Spec::Runner.configure do |config|

@@ -48,10 +48,7 @@ module Blendris
 
       if node = redis_symbol(name)
         if setter
-          value = node.set(*arguments)
-          fire_on_change_for name
-
-          return value
+          return node.set(*arguments)
         else
           return node.get
         end
@@ -70,7 +67,8 @@ module Blendris
 
       return unless options
 
-      options = options.merge(:model => self)
+      on_change = lambda { self.fire_on_change_for name }
+      options = options.merge(:model => self, :on_change => on_change)
 
       options[:type].new subkey, options
     end

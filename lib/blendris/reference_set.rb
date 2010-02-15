@@ -12,6 +12,7 @@ module Blendris
       @refs ||= RedisSet.new(@key)
     end
 
+    # TODO set should be a real set, while << appends
     def set(*objs)
       objs.flatten!
       objs.compact!
@@ -23,6 +24,8 @@ module Blendris
         end
       end
 
+      notify_changed if objs.count > 0
+
       self
     end
     alias :<< :set
@@ -31,6 +34,7 @@ module Blendris
       if refkey = self.class.cast_to_redis(obj, @options)
         deleted = refs.delete(refkey)
         apply_reverse_delete(obj) if deleted
+        notify_changed
         deleted
       end
     end

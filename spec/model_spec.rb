@@ -205,4 +205,14 @@ describe Model do
     count.should == 5
   end
 
+  it "should call its on_change method for all fields" do
+    o = OnChangeTestModel.create
+    lambda { o.string = "test" }.should raise_exception TestEx
+    lambda { o.integer = 123 }.should raise_exception TestEx
+    lambda { o.set = [1,2,3] }.should raise_exception TestEx
+    lambda { o.list = [1,5,8] }.should raise_exception TestEx
+    lambda { o.ref = o }.should raise_exception TestEx
+    lambda { o.refs << o }.should raise_exception TestEx
+  end
+
 end

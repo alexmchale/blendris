@@ -13,6 +13,7 @@ module Blendris
       @key = sanitize_key(key)
       @reverse = options[:reverse]
       @options = options
+      @on_change = options[:on_change]
 
       @klass = options[:class] || Model
       @klass = constantize(camelize @klass) if @klass.kind_of? String

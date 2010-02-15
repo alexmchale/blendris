@@ -10,6 +10,7 @@ module Blendris
     def initialize(key, options = {})
       @key = key.to_s
       @options = options
+      @on_change = options[:on_change]
     end
 
     def each
@@ -19,9 +20,13 @@ module Blendris
     end
 
     def <<(value)
-      [ value ].flatten.compact.each do |v|
+      values = [ value ].flatten.compact
+
+      values.flatten.compact.each do |v|
         redis.rpush key, v
       end
+
+      notify_changed if values.count > 0
 
       self
     end
@@ -32,6 +37,8 @@ module Blendris
 
     def delete(value)
       redis.lrem key, 0, value
+    ensure
+      notify_changed
     end
 
   end

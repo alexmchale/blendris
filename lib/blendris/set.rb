@@ -10,6 +10,7 @@ module Blendris
     def initialize(key, options = {})
       @key = key.to_s
       @options = options
+      @on_change = options[:on_change]
     end
 
     def each
@@ -26,6 +27,8 @@ module Blendris
       end
 
       self
+    ensure
+      notify_changed
     end
 
     def get
@@ -34,6 +37,8 @@ module Blendris
 
     def delete(value)
       redis.srem key, value
+    ensure
+      notify_changed
     end
 
   end

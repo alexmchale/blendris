@@ -12,8 +12,11 @@ module Blendris
       @key = sanitize_key(key)
       @default = options[:default]
       @options = options
+      @on_change = options[:on_change]
 
-      set(@default) if @default && !redis.exists(self.key)
+      if @default && !redis.exists(self.key)
+        redis.set key, self.class.cast_to_redis(@default, @options)
+      end
     end
 
     def set(value)
@@ -22,6 +25,8 @@ module Blendris
       else
         redis.del key
       end
+    ensure
+      notify_changed
     end
 
     def get
@@ -30,6 +35,8 @@ module Blendris
 
     def clear
       redis.del key
+    ensure
+      notify_changed
     end
 
     def type
@@ -38,6 +45,10 @@ module Blendris
 
     def exists?
       redis.exists key
+    end
+
+    def notify_changed
+      @on_change.call if @on_change
     end
 
   end

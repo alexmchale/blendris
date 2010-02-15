@@ -25,7 +25,10 @@ module Blendris
         modified = true
       end
 
-      apply_reverse_delete(old_obj) if modified
+      if modified
+        apply_reverse_delete(old_obj)
+        notify_changed
+      end
 
       obj
     end
