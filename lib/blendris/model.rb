@@ -48,7 +48,10 @@ module Blendris
 
       if node = redis_symbol(name)
         if setter
-          return node.set *arguments
+          value = node.set(*arguments)
+          fire_on_change_for name
+
+          return value
         else
           return node.get
         end
@@ -86,6 +89,18 @@ module Blendris
     # Return a list of field names for this model.
     def fields
       self.class.redis_symbols.map {|name, field| name.to_s}
+    end
+
+    # Fire the list of blocks called when the given symbol changes.
+    def fire_on_change_for(symbol)
+      blocks = [ self.class.on_change_table[nil], self.class.on_change_table[symbol.to_s] ]
+
+      blocks.flatten!
+      blocks.compact!
+
+      blocks.each do |block|
+        self.instance_exec symbol.to_s, &block
+      end
     end
 
     class << self
@@ -170,6 +185,27 @@ module Blendris
         raise ArgumentError.new("#{self.name} is missing its #{symbol}") unless options
 
         options[:type].cast_to_redis value, options
+      end
+
+      # Define a block to call when one of the given symbol values changes.
+      def on_change(*symbols, &block)
+        symbols.flatten!
+        symbols.compact!
+
+        if symbols.count == 0
+          on_change_table[nil] ||= []
+          on_change_table[nil] << block
+        else
+          symbols.each do |symbol|
+            on_change_table[symbol.to_s] ||= []
+            on_change_table[symbol.to_s] << block
+          end
+        end
+      end
+
+      # The hash of blocks called when fields on this object change.
+      def on_change_table
+        @on_change_table ||= {}
       end
 
     end

@@ -29,6 +29,10 @@ module TestFixtures
     refs    :friends, :class => Food, :reverse => :friends
     ref     :something
 
+    on_change :description do
+      self.calories += 1
+    end
+
   end
 
   class Category < Model

@@ -56,6 +56,13 @@ describe Model do
 
   end
 
+  it "should use its on_change field correctly" do
+    @apple.calories.should == 0
+    @apple.description = "good"
+    @apple.description = "bad"
+    @apple.calories.should == 2
+  end
+
   context "with single reference" do
 
     it "should reverse to a single reference" do
