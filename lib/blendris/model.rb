@@ -48,6 +48,10 @@ module Blendris
 
       if node = redis_symbol(name)
         if setter
+          if self.class.local_parameters.find {|p| p.kind_of?(Symbol) && p.to_s == name}
+            raise BlendrisCannotSetKeyValue.new(name)
+          end
+
           return node.set(*arguments)
         else
           return node.get

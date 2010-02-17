@@ -21,6 +21,11 @@ describe Model do
     @onion.category.name.should == "vegetable"
   end
 
+  it "should not allow its key values to be changed" do
+    lambda { @onion.name = "asdf" }.should raise_exception(BlendrisCannotSetKeyValue)
+    lambda { @onion.description = "asdf" }.should_not raise_exception
+  end
+
   it "should have a valid reference set" do
     @fruit.foods.count.should == 0
 
