@@ -79,7 +79,7 @@ a value of "37 Signals".
 
 ### refs ###
 
-Maintains a list of references to other objects.
+Refs maintains a set of references to other objects.
 
 * *:class* will limit objects in this reference set to the given class.
   If a string is specified as a class, it will be constantized before
