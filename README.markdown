@@ -16,6 +16,11 @@ BLENDRIS IS IN VERY EARLY ALPHA!!!
 
 PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 
+Blendris provides a way to create an object hierarchy within Redis,
+a key-value database.  It provides very little in the way of indexing
+or querying that data.  It is up to the user to maintain objects
+representing the query in which they are interested.
+
 
 
 # REQUIREMENTS #
@@ -32,38 +37,64 @@ gem install blendris
 
 # EXAMPLES #
 
-The following would create a Website model that knows its url and
-paths within the website.
+Let's say we want to maintain a list of employers and employees.
 
-    class Website < Blendris::Model
-      key "website", :title
+    class Employer < Blendris::Model
+      key "employer", :name
 
-      string :title
-      string :url
-      set    :paths
+      string :name
+      string :address
+
+      refs :employees, :class => "Employee", :reverse => :employer
     end
 
-    website = Website.create("One Fake Website")
-    website.url = "http://fakewebsite.com"
-    website.paths << "/blog/index"
-    website.paths << "/admin/index"
+    class Employee < Blendris::Model
+      key "employee", :name
 
-The above would create the following Redis keys:
+      string :name
+      string :address
+      set :family_members
 
-    website:One_Fake_Website       => "Website" (This identifies the model type)
-    website:One_Fake_Website:name  => "One Fake Website"
-    website:One_Fake_Website:url   => "http://fakewebsite.com"
-    website:One_Fake_Website:paths => [ "/blog/index", "/admin/index" ]
-
-Now suppose we want to open the Website model back up to add a concept of sister sites:
-
-    class Website
-      refs :sister_sites, :class => Website, :reverse => :sister_sites
+      ref :employer, :class => "Employer", :reverse => :employees
     end
 
-This will cause the website to maintain a set of other websites.  The reverse tag
-causes the other website's sister_sites set to be updated when it is added or removed
-from this site's list.
+### key ###
+
+Key sets the base key for this object.  In the case of the employer
+"37 Signals" it would create a key "employer:37_Signals" and set its value
+to "Employer".  In the key, strings are interpreted as literals and
+symbols are interpreted as pointers to that data field.
+
+* Note that spaces are converted to underscores, as spaces are not
+  allowed in Redis keys.  This could cause problems in some data sets.
+* Also note that the value assigned to the base key is the class name of
+  the model being used.
+* Only strings and integers should be used as key values.
+
+### string ###
+
+String creates a string key named for the first parameter given to it.
+This means that it would generate a key "employer:37_Signals:name" with
+a value of "37 Signals".
+
+### refs ###
+
+Maintains a list of references to other objects.
+
+* *:class* will limit objects in this reference set to the given class.
+  If a string is specified as a class, it will be constantized before
+  comparing.
+* *reverse* will cause the given field to be updated on the object when
+  it is added to or removed from this set.
+
+### new vs create ###
+
+Calling the *create* method will build a new object, generating a new base
+key based upon the parameters.  The parameter list should be the same as
+the list of symbols in your *key* field.
+
+Calling the *new* method will instantiate an existing object using the
+given *key* as the base key.
 
 
 
