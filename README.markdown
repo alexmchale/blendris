@@ -20,7 +20,7 @@ PLEASE DON'T USE IT FOR ANYTHING IMPORTANT YET!!!
 
 # REQUIREMENTS #
 
-Blendris uses the redis RubyGem.
+Blendris uses the [redis](http://gemcutter.org/gems/redis) RubyGem.
 
 
 
