@@ -25,7 +25,7 @@ representing the query in which they are interested.
 
 # REQUIREMENTS #
 
-Blendris uses the [redis](http://gemcutter.org/gems/redis) RubyGem.
+Blendris uses the [redis](http://gemcutter.org/gems/redis) gem.
 
 
 
