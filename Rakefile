@@ -9,7 +9,7 @@ require "redis"
 require "fileutils"
 require "./lib/blendris"
 
-Echoe.new("blendris", "0.0.4") do |p|
+Echoe.new("blendris", "0.5") do |p|
 
   p.description              = "A redis library for Ruby"
   p.url                      = "http://github.com/alexmchale/blendris"
