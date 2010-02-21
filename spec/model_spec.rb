@@ -35,6 +35,11 @@ describe Model do
     @fruit.foods.should be_include(@lemon)
     @fruit.foods.should be_include(Food.new("food:lemon"))
     @fruit.foods.should_not be_include(@steak)
+
+    @fruit.foods = @onion
+
+    @fruit.foods.count.should == 1
+    @fruit.foods.first.should == @onion
   end
 
   it "should not allow you to instantiate with a key that doesnt match its class" do

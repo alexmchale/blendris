@@ -21,6 +21,18 @@ module Blendris
       self
     end
 
+    def set(*values)
+      self.clear
+
+      values.flatten.compact.each do |v|
+        redis.sadd key, v
+      end
+
+      self
+    ensure
+      notify_changed
+    end
+
     def <<(value)
       [ value ].flatten.compact.each do |v|
         redis.sadd key, v

@@ -32,6 +32,8 @@ module Blendris
       return false
     end
 
+    # Redis keys cannot contain spaces, carriage returns, or newlines.
+    # We do not want colons at the start or end of keys.
     def sanitize_key(key)
       key.to_s.gsub(/[\r\n\s]/, "_").gsub(/^:+|:+$/, "")
     end
