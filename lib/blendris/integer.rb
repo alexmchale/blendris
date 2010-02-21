@@ -17,6 +17,14 @@ module Blendris
       value.to_i if value
     end
 
+    def increment
+      redis.incr key
+    end
+
+    def decrement
+      redis.decr key
+    end
+
   end
 
 end

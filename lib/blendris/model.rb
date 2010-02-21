@@ -76,6 +76,7 @@ module Blendris
 
       options[:type].new subkey, options
     end
+    alias :[] :redis_symbol
 
     # Calculate the key to address the given child node.
     def subkey(child)
