@@ -52,6 +52,19 @@ module Blendris
       redis.flushdb
     end
 
+    # Build a new temporary set with the given contents, yielding it to
+    # the passed block.  After the block exits, destroy the temporary set.
+    def in_temporary_set(*contents)
+      index = RedisInteger.new("blendris:temporary:index").increment
+
+      temporary_set = RedisSet.new("blendris:temporary:set:#{index}")
+      temporary_set << contents
+      yield temporary_set
+      temporary_set.clear
+
+      self
+    end
+
   end
 
 end
