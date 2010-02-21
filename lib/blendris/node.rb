@@ -33,6 +33,12 @@ module Blendris
       self.class.cast_from_redis redis.get(self.key), @options
     end
 
+    def rename(newkey)
+      redis.rename @key, sanitize_key(newkey)
+
+      @key = newkey
+    end
+
     def clear
       redis.del key
     ensure
