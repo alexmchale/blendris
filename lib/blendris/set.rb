@@ -53,6 +53,20 @@ module Blendris
       notify_changed
     end
 
+    # Set this set's members to the intersection of this set and the given set.
+    def intersect!(other)
+      redis.sinterstore key, key, other.key
+    ensure
+      notify_changed
+    end
+
+    # Set this set's members to the union of this set and the given set.
+    def union!(other)
+      redis.sunionstore key, key, other.key
+    ensure
+      notify_changed
+    end
+
   end
 
 end

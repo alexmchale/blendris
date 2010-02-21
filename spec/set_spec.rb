@@ -37,4 +37,30 @@ describe "redis sets" do
     redis.keys("blendris:temporary:set:*").count.should == 0
   end
 
+  it "should do intersections properly" do
+    s1 = RedisSet.new("set1")
+    s2 = RedisSet.new("set2")
+
+    s1 << [ 1, 2, 3 ]
+    s2 << [ 1, 4, 5 ]
+
+    s1.intersect!(s2).should == 1
+
+    s1.sort.should == %w( 1 )
+    s2.sort.should == %w( 1 4 5 )
+  end
+
+  it "should be able to union two sets" do
+    s1 = RedisSet.new("set1")
+    s2 = RedisSet.new("set2")
+
+    s1 << %w( 1 4 5 )
+    s2 << %w( 1 2 3 )
+
+    s1.union!(s2).should == 5
+
+    s1.sort.should == %w( 1 2 3 4 5 )
+    s2.sort.should == %w( 1 2 3 )
+  end
+
 end
