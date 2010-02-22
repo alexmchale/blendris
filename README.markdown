@@ -6,7 +6,8 @@ http://github.com/alexmchale/blendris
 
 # DESCRIPTION #
 
-Blendris is a Ruby interface to a Redis database.
+Blendris is a Ruby interface to a Redis database.  It performs no caching,
+causing all reads and writes to interact directly with Redis.
 
 
 
@@ -58,6 +59,29 @@ Let's say we want to maintain a list of employers and employees.
       ref :employer, :class => "Employer", :reverse => :employees
     end
 
+And now some examples of using them:
+
+    >> captain = Employee.create("Captain Amazing")
+    => #<Employee:0x45d18084 @key="employee:Captain_Amazing">
+
+    >> captain.address = "123 Fake Street"
+    => "123 Fake Street"
+
+    >> guild = Employer.create("The Really Fantastic Guild of Heroes")
+    => #<Employer:0x476e46f5 @key="employer:The_Really_Fantastic_Guild_of_Heroes">
+
+    >> guild.employees << captain
+    => #<Blendris::RedisReferenceSet:0x500150a0 @key="employer:The_Really_Fantastic_Guild_of_Heroes:employees", ...>
+
+    >> guild.employees.first.address
+    => "123 Fake Street"
+
+    >> guild.employees.count
+    => 1
+
+    >> guild.employees.first.employer.employees.first.name
+    => "Captain Amazing"
+
 ### key ###
 
 Key sets the base key for this object.  In the case of the employer
@@ -84,7 +108,7 @@ Refs maintains a set of references to other objects.
 * *:class* will limit objects in this reference set to the given class.
   If a string is specified as a class, it will be constantized before
   comparing.
-* *reverse* will cause the given field to be updated on the object when
+* *:reverse* will cause the given field to be updated on the object when
   it is added to or removed from this set.
 
 ### new vs create ###
