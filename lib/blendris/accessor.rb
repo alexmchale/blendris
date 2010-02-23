@@ -91,8 +91,12 @@ module Blendris
 
       temporary_set = RedisSet.new("blendris:temporary:set:#{index}")
       temporary_set << contents
-      yield temporary_set
-      temporary_set.clear
+
+      begin
+        yield temporary_set
+      ensure
+        temporary_set.clear
+      end
 
       self
     end

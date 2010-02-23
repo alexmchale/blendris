@@ -56,6 +56,8 @@ module Blendris
       redis.rename @key, sanitize_key(newkey)
 
       @key = newkey
+    ensure
+      notify_changed
     end
 
     def clear
