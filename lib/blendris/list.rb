@@ -2,9 +2,8 @@ module Blendris
 
   # RedisList is a wrapper for the Redis LIST data type.
 
-  class RedisList
+  class RedisList < RedisNode
 
-    include RedisNode
     include Enumerable
 
     def initialize(key, options = {})

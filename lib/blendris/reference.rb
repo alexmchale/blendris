@@ -5,8 +5,6 @@ module Blendris
 
   class RedisReference < RedisReferenceBase
 
-    include RedisNode
-
     def ref
       @ref ||= RedisString.new(@key)
     end

@@ -2,7 +2,7 @@ module Blendris
 
   # RedisNode is used to compose all Redis value wrapper classes.
 
-  module RedisNode
+  class RedisNode
 
     include RedisAccessor
 

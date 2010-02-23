@@ -2,9 +2,8 @@ module Blendris
 
   # RedisSet is a wrapper to the Redis SET data type.
 
-  class RedisSet
+  class RedisSet < RedisNode
 
-    include RedisNode
     include Enumerable
 
     def initialize(key, options = {})

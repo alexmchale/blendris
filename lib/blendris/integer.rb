@@ -3,9 +3,7 @@ module Blendris
   # RedisInteger is a string-value in Redis wrapped up to make
   # sure that it is used as an integer.
 
-  class RedisInteger
-
-    include RedisNode
+  class RedisInteger < RedisNode
 
     def self.cast_to_redis(value, options = {})
       raise TypeError.new("#{value.class.name} is not an integer") unless value.kind_of? Fixnum

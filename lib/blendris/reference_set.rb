@@ -5,7 +5,6 @@ module Blendris
 
   class RedisReferenceSet < RedisReferenceBase
 
-    include RedisNode
     include Enumerable
 
     def refs

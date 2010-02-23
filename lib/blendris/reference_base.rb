@@ -3,17 +3,15 @@ module Blendris
   # RedisReferenceBase holds the methods that are common to
   # RedisReference objects and RedisReferenceSet objects.
 
-  class RedisReferenceBase
+  class RedisReferenceBase < RedisNode
 
-    include RedisNode
     extend RedisAccessor
 
     def initialize(key, options = {})
+      super key, options
+
       @model = options[:model]
-      @key = sanitize_key(key)
       @reverse = options[:reverse]
-      @options = options
-      @on_change = options[:on_change]
 
       @klass = options[:class] || Model
       @klass = constantize(camelize @klass) if @klass.kind_of? String

@@ -2,9 +2,7 @@ module Blendris
 
   # RedisString is a wrapper to the Redis string data type.
 
-  class RedisString
-
-    include RedisNode
+  class RedisString < RedisNode
 
     def self.cast_to_redis(value, options = {})
       raise TypeError.new("#{value.class.name} is not a string") unless value.kind_of? String
