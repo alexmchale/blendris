@@ -96,6 +96,8 @@ Key sets the base key for this object.
   model being used.
 * Only strings and integers should be used as key values.
 
+Examples of keys in use:
+
     >> employer = Employer.create("37 Signals")
     => #<Employer:0x169da74 @key="employer:37_Signals">
 
