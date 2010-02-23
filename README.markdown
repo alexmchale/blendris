@@ -101,9 +101,9 @@ String creates a string key named for the first parameter given to it.
 This means that it would generate a key "employer:37_Signals:name" with
 a value of "37 Signals".
 
-### refs ###
+### ref and refs ###
 
-Refs maintains a set of references to other objects.
+Refs maintain references to other objects.
 
 * *:class* will limit objects in this reference set to the given class.
   If a string is specified as a class, it will be constantized before
