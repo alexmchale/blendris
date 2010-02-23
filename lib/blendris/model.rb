@@ -156,7 +156,7 @@ module Blendris
       end
 
       def index_key
-        "index:model:#{self.name}"
+        "blendris:index:model:#{self.name}"
       end
 
       # Defines a new data type for Blendris:Model construction.
