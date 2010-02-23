@@ -1,5 +1,47 @@
 module Blendris
 
+  class << self
+
+    attr_accessor :host, :port, :database
+
+    # Specify the host to connect to for the Redis connection.
+    def host=(host)
+      @host = host || "localhost"
+      $_redis_connection = nil
+    end
+
+    # Specify the port to connect to for the Redis connection.
+    def port=(port)
+      @port = port.to_i
+      @port = 6379 unless (1 .. 65535).include? @port
+      $_redis_connection = nil
+    end
+
+    # Specify the database number to use in the Redis database.
+    def database=(index)
+      @database = index.to_i
+      $_redis_connection = nil
+    end
+
+    # Retrieve the connection to the current Redis database.
+    def redis
+      parms =
+        {
+          :host => @host,
+          :port => @port,
+          :db   => @database
+        }
+
+      $_redis_connection ||= Redis.new(parms)
+    end
+
+    # This will delete all keys in the current database.  Dangerous!
+    def flushdb
+      redis.flushdb
+    end
+
+  end
+
   # This module serves as a gateway to the Redis library.  Any object
   # that needs to access Redis directly should include it.
 
@@ -8,11 +50,11 @@ module Blendris
     include Utils
 
     def redis
-      RedisAccessor.redis
+      Blendris.redis
     end
 
     def self.redis
-      $_redis_connection ||= Redis.new
+      Blendris.redis
     end
 
     # Generate a key for the given model class with the given values list.
@@ -40,16 +82,6 @@ module Blendris
       end.map do |segment|
         sanitize_key segment
       end.compact.join(":")
-    end
-
-    # Change which database we're accessing in Redis.
-    def self.database=(index)
-      $_redis_connection = Redis.new(:db => index.to_i)
-    end
-
-    # This will delete all keys in the current database.  Dangerous!
-    def self.flushdb
-      redis.flushdb
     end
 
     # Build a new temporary set with the given contents, yielding it to

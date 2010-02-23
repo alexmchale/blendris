@@ -83,8 +83,8 @@ Spec::Runner.configure do |config|
   include TestFixtures
 
   config.before(:each) do
-    RedisAccessor.database = 11
-    RedisAccessor.flushdb
+    Blendris.database = 11
+    Blendris.flushdb
 
     @vegetable = Category.create("vegetable")
     @onion = Food.create("onion")
@@ -99,7 +99,8 @@ Spec::Runner.configure do |config|
   end
 
   config.after(:each) do
-    RedisAccessor.flushdb
+    Blendris.database = 11
+    Blendris.flushdb
   end
 end
 
