@@ -84,16 +84,33 @@ And now some examples of using them:
 
 ### key ###
 
-Key sets the base key for this object.  In the case of the employer
-"37 Signals" it would create a key "employer:37_Signals" and set its value
-to "Employer".  In the key, strings are interpreted as literals and
-symbols are interpreted as pointers to that data field.
+Key sets the base key for this object.
 
-* Note that spaces are converted to underscores, as spaces are not
-  allowed in Redis keys.  This could cause problems in some data sets.
-* Also note that the value assigned to the base key is the class name of
-  the model being used.
+* Any strings in the key will be used as literal strings.
+* Any symbols in the key will be set to the value of that field in this object.
+* In the case of the employer "37 Signals" it would create a key
+  "employer:37_Signals" and set its value to "Employer".
+* Note that spaces are converted to underscores, as spaces are not allowed in
+  Redis keys.  This could cause problems in some data sets.
+* Also note that the value assigned to the base key is the class name of the
+  model being used.
 * Only strings and integers should be used as key values.
+
+    # Create a new Employer named "37 Signals"
+    >> employer = Employer.create("37 Signals")
+    => #<Employer:0x169da74 @key="employer:37_Signals">
+
+    >> employer.key
+    => "employer:37_Signals"
+
+    >> employer.name
+    => "37 Signals"
+
+    >> employer[:name]
+    => #<Blendris::RedisString:0x20dbd794 @key="employer:37_Signals:name", ...>
+
+    >> employer[:name].key
+    => "employer:37_Signals:name"
 
 ### string ###
 
@@ -120,7 +137,37 @@ the list of symbols in your *key* field.
 Calling the *new* method will instantiate an existing object using the
 given *key* as the base key.
 
+Calling *create* on an object key that already exists is perfectly acceptable
+and only results in new Ruby objects being instantiated.  They will all read
+and write to the same Redis data.  Calling *new* however must be done on a
+Redis key that already exists and is set to the name of the requested model.
 
+    >> Employer.create("Giant Faceless Corporation")
+    => #<Employer:0x45a84b38 @key="employer:Giant_Faceless_Corporation">
+
+    >> Employer.create("Giant Faceless Corporation")
+    => #<Employer:0x12b8501d @key="employer:Giant_Faceless_Corporation">
+
+    >> Employer.create("Giant Faceless Corporation")
+    => #<Employer:0x742136c6 @key="employer:Giant_Faceless_Corporation">
+
+    >> Employer.new("Anything")
+    TypeError: Anything does not exist, not a Employer - you may want create instead of new
+            from .../blendris/lib/blendris/model.rb:25:in `initialize'
+            from (irb):32:in `new'
+            from (irb):32
+
+    >> Employer.new("employer:Giant_Faceless_Corporation")
+    => #<Employer:0x73cb4cae @key="employer:Giant_Faceless_Corporation">
+
+    >> Employee.create("Invisible Woman")
+    => #<Employee:0x5f27a49c @key="employee:Invisible_Woman">
+
+    >> Employer.new("employee:Invisible_Woman")
+    TypeError: employee:Invisible_Woman is a Employee, not a Employer
+            from /Users/amchale/Dropbox/Projects/blendris/lib/blendris/model.rb:26:in `initialize'
+            from (irb):36:in `new'
+            from (irb):36
 
 # LICENSE #
 
