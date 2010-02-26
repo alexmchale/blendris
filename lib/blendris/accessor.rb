@@ -70,10 +70,15 @@ module Blendris
         when Symbol
           value = values[value_index]
           value_index += 1
-
           raise ArgumentError.new("#{self.name} created without #{symbol}") unless value
 
-          klass.cast_value symbol, value
+          options = klass.redis_symbols[symbol.to_s]
+          raise ArgumentError.new("#{self.name} is missing its #{symbol}") unless options
+
+          subklass = options[:type]
+          raise ArgumentError.new("#{symbol} (#{subklass.name}) cannot be used in the key") unless subklass.respond_to? :cast_to_redis
+
+          subklass.cast_to_redis value, options
 
         else
           raise TypeError.new("only strings and symbols allowed in key definition for #{klass.name} (#{symbol.class.name})")

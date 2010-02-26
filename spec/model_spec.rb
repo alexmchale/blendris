@@ -22,8 +22,11 @@ describe Model do
   end
 
   it "should not allow its key values to be changed" do
-    lambda { @onion.name = "asdf" }.should raise_exception(BlendrisCannotSetKeyValue)
-    lambda { @onion.description = "asdf" }.should_not raise_exception
+    @onion.should respond_to :name
+    @onion.should_not respond_to :name=
+
+    @onion.should respond_to :description
+    @onion.should respond_to :description=
   end
 
   it "should have a valid reference set" do
@@ -223,6 +226,10 @@ describe Model do
     lambda { o.list = [1,5,8] }.should raise_exception TestEx
     lambda { o.ref = o }.should raise_exception TestEx
     lambda { o.refs << o }.should raise_exception TestEx
+  end
+
+  it "should be ok when you have sets and lists in the key" do
+    lambda { WeirdKeyModel.create([ "ok" ], [ "weird" ]) }.should raise_exception(ArgumentError)
   end
 
 end

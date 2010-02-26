@@ -75,6 +75,13 @@ module TestFixtures
     on_change { raise TestEx.new }
   end
 
+  class WeirdKeyModel < Blendris::Model
+    key "setkey", :myset, "listkey", :mylist
+
+    set :myset
+    list :mylist
+  end
+
   class TestEx < Exception; end
 
 end

@@ -23,14 +23,14 @@ module Blendris
 
     def apply_reverse_add(value)
       if @reverse && value
-        reverse = value.redis_symbol(@reverse)
+        reverse = value[@reverse]
         reverse.assign_ref(@model) if !reverse.references @model
       end
     end
 
     def apply_reverse_delete(value)
       if @reverse && value
-        reverse = value.redis_symbol(@reverse)
+        reverse = value[@reverse]
         reverse.remove_ref(@model) if reverse.references @model
       end
     end

@@ -40,34 +40,14 @@ module Blendris
       Digest::SHA1.hexdigest key
     end
 
-    # TODO: Create the methods in the initialize method instead of depending
-    # on method_missing to dispatch to the correct methods.  This will make
-    # these objects better for mocking and stubbing.
-    def method_missing(method_sym, *arguments)
-      (name, setter) = method_sym.to_s.scan(/(.*[^=])(=)?/).first
-
-      if node = redis_symbol(name)
-        if setter
-          if self.class.local_parameters.find {|p| p.kind_of?(Symbol) && p.to_s == name}
-            raise BlendrisCannotSetKeyValue.new(name)
-          end
-
-          return node.set(*arguments)
-        else
-          return node.get
-        end
-      end
-
-      super
-    end
-
     # Look up the given symbol by its name.  The list of symbols are defined
     # when the model is declared.
-    # TODO: This can also probably go away when I remove the need for method_missing.
-    def redis_symbol(name)
+    def [](name)
+      name = name.to_s
+
       subkey = self.subkey(name)
 
-      options = self.class.redis_symbols[name.to_s]
+      options = self.class.redis_symbols[name]
 
       return unless options
 
@@ -76,7 +56,6 @@ module Blendris
 
       options[:type].new subkey, options
     end
-    alias :[] :redis_symbol
 
     # Calculate the key to address the given child node.
     def subkey(child)
@@ -136,7 +115,7 @@ module Blendris
         obj = new(key, :verify => false)
 
         parameters.each_with_index do |parm, i|
-          obj.redis_symbol(parm).set args[i]
+          obj[parm].set args[i]
         end
 
         obj
@@ -168,6 +147,18 @@ module Blendris
 
             options[:type] = klass
             redis_symbols[varname] = options
+
+            # Declare the getter for this field.
+            define_method(varname) do
+              self[varname].get
+            end
+
+            # Declare the setter for this field, if it is not a key field.
+            unless local_parameters.find {|p| p.to_s == varname}
+              define_method("#{varname}=") do |value|
+                self[varname].set value
+              end
+            end
           end
         end
       end
@@ -180,14 +171,6 @@ module Blendris
       # Parameters used when creating a new copy of this model.
       def local_parameters
         @local_parameters ||= []
-      end
-
-      # Take a value and attempt to make it fit the given field.
-      def cast_value(symbol, value)
-        options = redis_symbols[symbol.to_s]
-        raise ArgumentError.new("#{self.name} is missing its #{symbol}") unless options
-
-        options[:type].cast_to_redis value, options
       end
 
       # Define a block to call when one of the given symbol values changes.
