@@ -17,10 +17,14 @@ module Blendris
 
     def increment
       redis.incr key
+    ensure
+      notify_changed
     end
 
     def decrement
       redis.decr key
+    ensure
+      notify_changed
     end
 
   end

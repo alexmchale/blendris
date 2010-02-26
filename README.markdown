@@ -170,6 +170,46 @@ Redis key that already exists and is set to the name of the requested model.
             from (irb):36:in `new'
             from (irb):36
 
+### on_change ###
+
+This keyword allows you to execute a block when one or more fields on the
+object change.  The block is executed within the context of the object.
+
+    class Dog < Blendris::Model
+      key "dog", :name
+
+      string  :name
+      string  :color
+      integer :attention
+      integer :food
+
+      on_change do
+        puts "Bark, bark!"
+      end
+
+      on_change :attention, :food do
+        puts "Woof, woof!"
+      end
+    end
+
+    >> d = Dog.create("Spot")
+    Bark, bark!
+    => #<Dog:0x000001011739e8 @key="dog:Spot">
+
+    >> d.attention = 0
+    Bark, bark!
+    Woof, woof!
+    => 0
+
+    >> d.color = "brown"
+    Bark, bark!
+    => "brown"
+
+    >> d[:attention].increment
+    Bark, bark!
+    Woof, woof!
+    => 1
+
 # LICENSE #
 
 (The MIT License)
