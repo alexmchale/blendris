@@ -12,8 +12,21 @@ module Blendris
     end
 
     def set(*objs)
-      refkeys = objs.flatten.compact.map {|o| o.key}
-      self.refs.set refkeys
+      objs.flatten!
+      objs.compact!
+
+      # Delete reference keys that were removed.
+      self.each do |obj|
+        unless objs.include? obj
+          apply_reverse_delete obj
+        end
+      end
+
+      # Clear the current set.
+      self.refs.clear
+
+      # Add the new objects to the set.
+      self << objs
 
       self
     ensure

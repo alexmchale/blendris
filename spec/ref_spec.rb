@@ -35,6 +35,15 @@ describe "references" do
     @fruit.foods.count.should == 0
     @onion.category.should == @vegetable
 
+    @vegetable.foods = [ @apple, @lemon, @lemon ]
+    @vegetable.foods << @apple
+    @vegetable.foods.count.should == 2
+    @vegetable.foods.should be_include @apple
+    @vegetable.foods.should be_include @lemon
+    @apple.category.should == @vegetable
+    @lemon.category.should == @vegetable
+    @onion.category.should == nil
+
   end
 
 end
