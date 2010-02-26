@@ -12,6 +12,18 @@ module Blendris
       @on_change = options[:on_change]
     end
 
+    def set(*values)
+      # Remove all of the old values.
+      self.clear
+
+      # Add all of the new values.
+      self << values
+
+      self
+    ensure
+      notify_changed
+    end
+
     def each
       redis.lrange(key, 0, -1).each do |value|
         yield value
