@@ -21,6 +21,7 @@ lib/blendris/utils.rb
 script/console
 script/destroy
 script/generate
+spec/integer_spec.rb
 spec/list_spec.rb
 spec/model_spec.rb
 spec/redis-tools_spec.rb
@@ -29,4 +30,3 @@ spec/set_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
 spec/string_spec.rb
-tasks/rspec.rake

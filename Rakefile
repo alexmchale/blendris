@@ -1,10 +1,10 @@
 require "rubygems"
+require "rubygems/commands/push_command"
 
 gem "echoe", ">= 4.1"
 gem "redis", ">= 0.1.2"
 
 require "echoe"
-
 require "redis"
 require "fileutils"
 require "./lib/blendris"
