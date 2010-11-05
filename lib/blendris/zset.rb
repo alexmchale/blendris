@@ -24,6 +24,21 @@ module Blendris
       self
     end
 
+    def each_with_scores(min = "-inf", max = "+inf", mode = :score)
+      flat_pairs =
+        case mode
+        when :rank  then redis.zrange key, min, max, :with_scores => true
+        when :score then redis.zrangebyscore key, min, max, :with_scores => true
+        else             raise "unknown zset mode #{mode}"
+        end
+
+      pairify(flat_pairs).each do |value, score|
+        yield score.to_f, value
+      end
+
+      self
+    end
+
     def set(*pairs)
       tempkey = "#{key}:::TEMP:::#{rand}"
       redis.del tempkey
