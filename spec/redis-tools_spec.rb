@@ -8,10 +8,10 @@ describe "redis connection accessor" do
     testkey = "test-string"
 
     redis.get(testkey).should == nil
-    redis.set(testkey, "foo").should == true
+    redis.set(testkey, "foo").should == "OK"
     redis.get(testkey).should == "foo"
-    redis.del(testkey).should == true
-    redis.del(testkey).should == false
+    redis.del(testkey).should == 1
+    redis.del(testkey).should == 0
   end
 
   it "should allow for keys to be renamed" do

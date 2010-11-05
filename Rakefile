@@ -1,5 +1,6 @@
 require "rubygems"
 require "rubygems/commands/push_command"
+require "rspec/core/rake_task"
 
 gem "echoe", ">= 4.1"
 gem "redis", ">= 0.1.2"
@@ -18,6 +19,10 @@ Echoe.new("blendris", "0.6") do |p|
   p.ignore_pattern           = [ "tmp", "pkg", "script" ]
   p.development_dependencies = []
 
+end
+
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = "spec/**/*_spec.rb"
 end
 
 Dir['tasks/**/*.rake'].each { |t| load t }
