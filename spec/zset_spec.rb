@@ -20,4 +20,10 @@ describe "redis zsets" do
     z.to_a.should == %w( dog cat )
   end
 
+  it "should accept hashes" do
+    z = RedisSortedSet.new("set1")
+    z << { 2 => "c", 0 => "a", 1 => "b" }
+    z.to_a.should == %w( a b c )
+  end
+
 end

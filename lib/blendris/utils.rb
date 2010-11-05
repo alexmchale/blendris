@@ -41,7 +41,12 @@ module Blendris
     # Take an array and turn it into a list of pairs.
     def pairify(*arr)
       arr = arr.flatten
-      (0 ... arr.length/2).map { |i| [ arr[2*i], arr[2*i + 1] ] }
+
+      if arr.length == 1 && arr.first.kind_of?(Hash)
+        arr.first.map { |k, v| [ k, v ] }
+      else
+        (0 ... arr.length/2).map { |i| [ arr[2*i], arr[2*i + 1] ] }
+      end
     end
 
   end
