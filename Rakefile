@@ -2,15 +2,12 @@ require "rubygems"
 require "rubygems/commands/push_command"
 require "rspec/core/rake_task"
 
-gem "echoe", ">= 4.1"
-gem "redis", ">= 0.1.2"
-
 require "echoe"
 require "redis"
 require "fileutils"
 require "./lib/blendris"
 
-Echoe.new("blendris", "0.6") do |p|
+Echoe.new("blendris", Blendris::VERSION) do |p|
 
   p.description              = "A redis library for Ruby"
   p.url                      = "http://github.com/alexmchale/blendris"

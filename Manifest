@@ -1,4 +1,5 @@
 History.txt
+LICENSE
 Manifest
 PostInstall.txt
 README.markdown
@@ -18,6 +19,7 @@ lib/blendris/set.rb
 lib/blendris/string.rb
 lib/blendris/types.rb
 lib/blendris/utils.rb
+lib/blendris/zset.rb
 script/console
 script/destroy
 script/generate
@@ -27,6 +29,7 @@ spec/model_spec.rb
 spec/redis-tools_spec.rb
 spec/ref_spec.rb
 spec/set_spec.rb
-spec/spec.opts
 spec/spec_helper.rb
 spec/string_spec.rb
+spec/utils_spec.rb
+spec/zset_spec.rb
