@@ -13,4 +13,11 @@ describe "redis zsets" do
     z.to_a.should == %w( dog )
   end
 
+  it "should delete correctly" do
+    z = RedisSortedSet.new("set1")
+    z << [ [2, "timothy"], [1, "alexander"], [3, "mchale"], [0, "dog"], [7, "cat"] ]
+    z.delete_by_score 1, 3
+    z.to_a.should == %w( dog cat )
+  end
+
 end
