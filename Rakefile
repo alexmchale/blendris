@@ -18,6 +18,7 @@ Echoe.new("blendris", "0.6") do |p|
   p.email                    = "alexmchale@gmail.com"
   p.ignore_pattern           = [ "tmp", "pkg", "script" ]
   p.development_dependencies = []
+  p.runtime_dependencies     = [ "redis >=2.0.13" ]
 
 end
 

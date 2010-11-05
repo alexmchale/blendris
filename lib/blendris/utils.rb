@@ -38,6 +38,12 @@ module Blendris
       key.to_s.gsub(/[\r\n\s]/, "_").gsub(/^:+|:+$/, "")
     end
 
+    # Take an array and turn it into a list of pairs.
+    def pairify(*arr)
+      arr = arr.flatten
+      (0 ... arr.length/2).map { |i| [ arr[2*i], arr[2*i + 1] ] }
+    end
+
   end
 
 end

@@ -19,6 +19,7 @@ require "blendris/string"
 require "blendris/integer"
 require "blendris/list"
 require "blendris/set"
+require "blendris/zset"
 
 require "blendris/reference_base"
 require "blendris/reference"

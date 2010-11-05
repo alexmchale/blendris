@@ -7,6 +7,7 @@ module Blendris
     type :string, RedisString
     type :integer, RedisInteger
     type :set, RedisSet
+    type :zset, RedisSortedSet
     type :list, RedisList
     type :ref, RedisReference
     type :refs, RedisReferenceSet
