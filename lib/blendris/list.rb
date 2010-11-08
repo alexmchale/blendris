@@ -52,6 +52,10 @@ module Blendris
       notify_changed
     end
 
+    def count
+      redis.llen key
+    end
+
   end
 
 end

@@ -52,6 +52,10 @@ module Blendris
       notify_changed
     end
 
+    def count
+      redis.scard key
+    end
+
     # Set this set's members to the intersection of this set and the given set.
     def intersect!(other)
       redis.sinterstore key, key, other.key

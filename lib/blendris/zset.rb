@@ -100,6 +100,10 @@ module Blendris
       notify_changed
     end
 
+    def count
+      redis.zcard key
+    end
+
   end
 
 end

@@ -86,6 +86,10 @@ module Blendris
       self.include? value
     end
 
+    def count
+      refs.count
+    end
+
   end
 
 end
