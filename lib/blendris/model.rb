@@ -85,6 +85,12 @@ module Blendris
       end
     end
 
+    def destroy
+      self.class.redis_symbols.keys.each { |key| self[key].clear }
+      redis.srem self.class.index_key, key
+      redis.del key
+    end
+
     class << self
 
       include RedisAccessor
